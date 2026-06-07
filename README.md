@@ -335,6 +335,6 @@ If you found this project helpful or enjoyable, please consider:
 
 💡 Suggesting new features
 
-<div align="center">
-Made with ❤️ using React, TypeScript, and Tailwind CSS
+
+                                                Made with ❤️ using React, TypeScript, and Tailwind CSS
 
