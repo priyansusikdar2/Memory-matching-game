@@ -13,8 +13,6 @@
 
 <br/>
 
-![Game Preview](https://via.placeholder.com/800x400?text=Memory+Matching+Game+Preview)
-
 </div>
 
 ---
@@ -154,46 +152,56 @@ Flip cards, match pairs, and complete the grid in the fewest moves and fastest t
 
 ---
 
-## 📁 **Project Structure**
+## 📁 Project Structure
+
+```text
 memory-matching-game/
 ├── src/
-│ ├── tests/ # Unit tests
-│ │ ├── App.test.tsx
-│ │ └── gameUtils.test.ts
-│ ├── components/ # React components
-│ │ ├── Card.tsx
-│ │ ├── GameBoard.tsx
-│ │ ├── GameControls.tsx
-│ │ ├── GameStats.tsx
-│ │ └── VictoryModal.tsx
-│ ├── config/ # Configuration files
-│ │ └── firebase.ts
-│ ├── context/ # React Context
-│ │ └── FirebaseContext.tsx
-│ ├── data/ # Static data
-│ │ └── cardIcons.ts
-│ ├── hooks/ # Custom hooks
-│ │ ├── useGameLogic.ts
-│ │ └── useTimer.ts
-│ ├── types/ # TypeScript types
-│ │ └── game.types.ts
-│ ├── utils/ # Utility functions
-│ │ └── gameUtils.ts
-│ ├── App.tsx # Main game component
-│ ├── main.tsx # Entry point
-│ └── index.css # Global styles
-├── public/ # Static assets
-├── index.html # HTML template
-├── package.json # Dependencies
-├── tsconfig.json # TypeScript config
-├── vite.config.ts # Vite config
-├── vitest.config.ts # Vitest config
-├── tailwind.config.js # Tailwind CSS config
-├── firebase.json # Firebase config
-├── .firebaserc # Firebase project settings
-└── README.md # Documentation
-
-text
+│   ├── tests/                      # Unit tests
+│   │   ├── App.test.tsx
+│   │   └── gameUtils.test.ts
+│   │
+│   ├── components/                 # React components
+│   │   ├── Card.tsx
+│   │   ├── GameBoard.tsx
+│   │   ├── GameControls.tsx
+│   │   ├── GameStats.tsx
+│   │   └── VictoryModal.tsx
+│   │
+│   ├── config/                     # Configuration files
+│   │   └── firebase.ts
+│   │
+│   ├── context/                    # React Context
+│   │   └── FirebaseContext.tsx
+│   │
+│   ├── data/                       # Static data
+│   │   └── cardIcons.ts
+│   │
+│   ├── hooks/                      # Custom hooks
+│   │   ├── useGameLogic.ts
+│   │   └── useTimer.ts
+│   │
+│   ├── types/                      # TypeScript types
+│   │   └── game.types.ts
+│   │
+│   ├── utils/                      # Utility functions
+│   │   └── gameUtils.ts
+│   │
+│   ├── App.tsx                     # Main game component
+│   ├── main.tsx                    # Entry point
+│   └── index.css                   # Global styles
+│
+├── public/                         # Static assets
+├── index.html                      # HTML template
+├── package.json                    # Dependencies
+├── tsconfig.json                   # TypeScript configuration
+├── vite.config.ts                  # Vite configuration
+├── vitest.config.ts                # Vitest configuration
+├── tailwind.config.js              # Tailwind CSS configuration
+├── firebase.json                   # Firebase configuration
+├── .firebaserc                     # Firebase project settings
+└── README.md                       # Documentation
+```
 
 ---
 
@@ -313,7 +321,7 @@ Inspiration: Classic memory matching games
 
 📞 Contact & Support
 Platform	Link
-GitHub	@YOUR_USERNAME
+GitHub	@priyansusikdar2
 Project Link	Memory Matching Game
 Live Demo	Play Now
 ⭐ Show Your Support
@@ -329,27 +337,4 @@ If you found this project helpful or enjoyable, please consider:
 
 <div align="center">
 Made with ❤️ using React, TypeScript, and Tailwind CSS
-© 2024 Memory Matching Game. All rights reserved.
-
-</div> ```
-📝 Instructions to Use:
-Copy the entire code block above
-
-Go to your GitHub repository
-
-Click "Add file" → "Create new file"
-
-Name the file README.md
-
-Paste the copied content
-
-Replace placeholders:
-
-YOUR_USERNAME with your GitHub username
-
-Update the live demo URL if different
-
-Scroll down and click "Commit new file"
-
-The README is now professional, attractive, and ready to impress visitors to your GitHub repository! 🎉
 
