@@ -34,6 +34,11 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     }
   };
 
+  // Get background color based on dark mode
+  const getBackgroundClass = () => {
+    return isDarkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-purple-50 to-pink-50';
+  };
+
   // Container animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -70,10 +75,13 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     }
   };
 
+  // Check if all cards are matched
+  const isGameCompleted = cards.length > 0 && cards.every(card => card.status === 'matched');
+
   return (
-    <div className="py-6 md:py-8">
+    <div className={`py-6 md:py-8 rounded-xl transition-colors duration-300 ${getBackgroundClass()}`}>
       <motion.div
-        className={`grid ${getGridClasses()} gap-2 md:gap-3 lg:gap-4 max-w-6xl mx-auto`}
+        className={`grid ${getGridClasses()} gap-2 md:gap-3 lg:gap-4 max-w-6xl mx-auto p-4`}
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -100,40 +108,56 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       </motion.div>
       
       {/* Game completion celebration effect */}
-      {cards.every(card => card.status === 'matched') && (
+      <AnimatePresence>
+        {isGameCompleted && (
+          <motion.div
+            className="fixed inset-0 pointer-events-none z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {[...Array(50)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute text-2xl md:text-3xl lg:text-4xl"
+                initial={{
+                  x: Math.random() * window.innerWidth,
+                  y: window.innerHeight,
+                  scale: 0,
+                  rotate: 0
+                }}
+                animate={{
+                  y: -100,
+                  scale: [0, 1, 0],
+                  rotate: [0, 360, 720],
+                  x: Math.random() * window.innerWidth
+                }}
+                transition={{
+                  duration: 2 + Math.random() * 2,
+                  delay: Math.random() * 0.5,
+                  ease: "easeOut"
+                }}
+              >
+                {['🎉', '🎊', '🏆', '⭐', '🎮', '🃏', '✨', '🌟'][i % 8]}
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Completion message */}
+      {isGameCompleted && (
         <motion.div
-          className="fixed inset-0 pointer-events-none z-50"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+          className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50"
         >
-          {[...Array(50)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute text-2xl"
-              initial={{
-                x: Math.random() * window.innerWidth,
-                y: window.innerHeight,
-                scale: 0,
-                rotate: 0
-              }}
-              animate={{
-                y: -100,
-                scale: [0, 1, 0],
-                rotate: [0, 360, 720],
-                x: Math.random() * window.innerWidth
-              }}
-              transition={{
-                duration: 2 + Math.random() * 2,
-                delay: Math.random() * 0.5,
-                ease: "easeOut"
-              }}
-            >
-              {['🎉', '🎊', '🏆', '⭐', '🎮', '🃏', '✨', '🌟'][i % 8]}
-            </motion.div>
-          ))}
+          <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full shadow-2xl font-bold text-lg md:text-xl">
+            🎉 Congratulations! You completed the game! 🎉
+          </div>
         </motion.div>
       )}
     </div>
   );
-};   
+};

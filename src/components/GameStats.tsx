@@ -14,28 +14,32 @@ export const GameStats: React.FC<GameStatsProps> = ({ stats, isDarkMode }) => {
       value: stats.moves, 
       icon: '🖱️',
       color: 'blue',
-      gradient: 'from-blue-500 to-blue-600'
+      gradient: 'from-blue-500 to-blue-600',
+      progressBar: false
     },
     { 
       label: 'Matches', 
       value: stats.matchedPairs, 
       icon: '🎯',
       color: 'green',
-      gradient: 'from-green-500 to-green-600'
+      gradient: 'from-green-500 to-green-600',
+      progressBar: false
     },
     { 
       label: 'Time', 
       value: `${Math.floor(stats.timeElapsed / 60)}:${String(stats.timeElapsed % 60).padStart(2, '0')}`,
       icon: '⏱️',
       color: 'yellow',
-      gradient: 'from-yellow-500 to-yellow-600'
+      gradient: 'from-yellow-500 to-yellow-600',
+      progressBar: false
     },
     { 
       label: 'Score', 
       value: stats.score, 
       icon: '🏆',
       color: 'purple',
-      gradient: 'from-purple-500 to-purple-600'
+      gradient: 'from-purple-500 to-purple-600',
+      progressBar: true
     }
   ];
 
@@ -55,6 +59,22 @@ export const GameStats: React.FC<GameStatsProps> = ({ stats, isDarkMode }) => {
     visible: { opacity: 1, scale: 1 }
   };
 
+  // Get color RGB values for glow effect
+  const getColorRGB = (color: string): string => {
+    switch (color) {
+      case 'blue': return '59, 130, 246';
+      case 'green': return '34, 197, 94';
+      case 'yellow': return '234, 179, 8';
+      case 'purple': return '168, 85, 247';
+      default: return '168, 85, 247';
+    }
+  };
+
+  // Get score percentage for progress bar
+  const getScorePercentage = (score: number): number => {
+    return Math.min(100, (score / 1000) * 100);
+  };
+
   return (
     <motion.div
       className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8"
@@ -62,7 +82,7 @@ export const GameStats: React.FC<GameStatsProps> = ({ stats, isDarkMode }) => {
       initial="hidden"
       animate="visible"
     >
-      {statItems.map((item, index) => (
+      {statItems.map((item) => (
         <motion.div
           key={item.label}
           variants={itemVariants}
@@ -93,7 +113,7 @@ export const GameStats: React.FC<GameStatsProps> = ({ stats, isDarkMode }) => {
             </div>
             
             <motion.p
-              key={item.value}
+              key={String(item.value)}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -105,27 +125,37 @@ export const GameStats: React.FC<GameStatsProps> = ({ stats, isDarkMode }) => {
             </motion.p>
             
             {/* Progress bar for score */}
-            {item.label === 'Score' && typeof item.value === 'number' && (
-              <div className="mt-2 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            {item.progressBar && typeof item.value === 'number' && (
+              <div className="mt-2 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
+                  className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
                   initial={{ width: 0 }}
-                  animate={{ width: `${Math.min(100, (item.value / 1000) * 100)}%` }}
-                  transition={{ duration: 0.5 }}
+                  animate={{ width: `${getScorePercentage(item.value)}%` }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                 />
+              </div>
+            )}
+            
+            {/* Mini stat indicator */}
+            {item.label === 'Matches' && typeof item.value === 'number' && (
+              <div className="mt-1 text-xs text-center text-green-600 dark:text-green-400">
+                {item.value}/12 pairs
+              </div>
+            )}
+            
+            {item.label === 'Moves' && typeof item.value === 'number' && item.value > 0 && (
+              <div className="mt-1 text-xs text-center text-blue-600 dark:text-blue-400">
+                Avg: {Math.round(item.value / Math.max(1, stats.matchedPairs))} per match
               </div>
             )}
           </div>
           
           {/* Glow effect on hover */}
           <motion.div
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 pointer-events-none rounded-xl"
             whileHover={{
-              boxShadow: `0 0 20px rgba(${
-                item.color === 'blue' ? '59, 130, 246' :
-                item.color === 'green' ? '34, 197, 94' :
-                item.color === 'yellow' ? '234, 179, 8' : '168, 85, 247'
-              }, 0.5)`
+              boxShadow: `0 0 20px rgba(${getColorRGB(item.color)}, 0.3)`,
+              transition: { duration: 0.2 }
             }}
           />
         </motion.div>

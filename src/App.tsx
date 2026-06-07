@@ -45,7 +45,6 @@ const App: React.FC = () => {
   const [showVictoryModal, setShowVictoryModal] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState<'animals' | 'food' | 'space' | 'holidays' | 'vehicles' | 'emojis'>('animals');
   const [selectedCardBack, setSelectedCardBack] = useState<'default' | 'pattern' | 'stars' | 'hearts'>('default');
-  const [showHint, setShowHint] = useState(false);
   const [hintCard, setHintCard] = useState<number | null>(null);
   const [multiplayerMode, setMultiplayerMode] = useState(false);
   const [currentPlayer, setCurrentPlayer] = useState<'player1' | 'player2'>('player1');
@@ -54,7 +53,7 @@ const App: React.FC = () => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [playerName, setPlayerName] = useState('');
   const [showNamePrompt, setShowNamePrompt] = useState(true);
-  const [dailyChallenge, setDailyChallenge] = useState<{ date: string; pairs: number; completed: boolean } | null>(null);
+  const [_dailyChallenge, _setDailyChallenge] = useState<{ date: string; pairs: number; completed: boolean } | null>(null);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [pausedTime, setPausedTime] = useState(0);
 
@@ -133,7 +132,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // Start timer - FIXED
+  // Start timer
   const startTimer = useCallback(() => {
     if (timerRef.current) stopTimer();
     
@@ -161,9 +160,7 @@ const App: React.FC = () => {
   // Initialize game
   const initializeGame = useCallback(() => {
     const config = difficultyConfig[difficulty];
-    const pairs = dailyChallenge?.date === new Date().toDateString() && !dailyChallenge.completed 
-      ? dailyChallenge.pairs 
-      : config.pairs;
+    const pairs = config.pairs;
     
     const icons = [...themeIcons[selectedTheme]].slice(0, pairs);
     const newCards: Card[] = [];
@@ -199,7 +196,7 @@ const App: React.FC = () => {
     }
     startTimeRef.current = Date.now();
     startTimer();
-  }, [difficulty, selectedTheme, timerMode, dailyChallenge, stopTimer, startTimer]);
+  }, [difficulty, selectedTheme, timerMode, stopTimer, startTimer]);
 
   // Calculate score
   const calculateScore = useCallback((currentMoves: number, currentMatches: number, time: number) => {
@@ -237,7 +234,7 @@ const App: React.FC = () => {
     }
   }, [moves, matches, timeElapsed, gameStatus, calculateScore]);
 
-  // Handle card click - FIXED MULTIPLAYER
+  // Handle card click
   const handleCardClick = (index: number) => {
     if (isProcessing || gameStatus !== 'playing') return;
     
@@ -284,7 +281,7 @@ const App: React.FC = () => {
           const newMatches = matches + 1;
           setMatches(newMatches);
           
-          // FIXED: Multiplayer scoring
+          // Multiplayer scoring
           if (multiplayerMode) {
             setPlayerScores(prev => {
               const newScores = { ...prev };
@@ -295,7 +292,6 @@ const App: React.FC = () => {
               }
               return newScores;
             });
-            // Switch player after successful match
             setCurrentPlayer(prev => prev === 'player1' ? 'player2' : 'player1');
           }
           
@@ -338,6 +334,19 @@ const App: React.FC = () => {
               setLeaderboard(newLeaderboard);
               localStorage.setItem('leaderboard', JSON.stringify(newLeaderboard));
             }
+            
+            // Check achievements
+            if (!achievements.includes('speed_demon') && timerMode === 'countdown' && timeElapsed > difficultyConfig[difficulty].countdownTime * 0.7) {
+              const newAchievements = [...achievements, 'speed_demon'];
+              setAchievements(newAchievements);
+              localStorage.setItem('achievements', JSON.stringify(newAchievements));
+            }
+            
+            if (!achievements.includes('marathon') && statistics.totalGames >= 9) {
+              const newAchievements = [...achievements, 'marathon'];
+              setAchievements(newAchievements);
+              localStorage.setItem('achievements', JSON.stringify(newAchievements));
+            }
           }
         }, 500);
       } else {
@@ -351,7 +360,6 @@ const App: React.FC = () => {
           setFlippedIndex(null);
           setIsProcessing(false);
           
-          // FIXED: Switch player on mismatch too
           if (multiplayerMode) {
             setCurrentPlayer(prev => prev === 'player1' ? 'player2' : 'player1');
           }
@@ -391,7 +399,7 @@ const App: React.FC = () => {
     }
   };
 
-  // FIXED: Pause game
+  // Pause game
   const pauseGame = () => {
     if (gameStatus === 'playing') {
       setGameStatus('paused');
@@ -401,11 +409,10 @@ const App: React.FC = () => {
     }
   };
 
-  // FIXED: Resume game
+  // Resume game
   const resumeGame = () => {
     if (gameStatus === 'paused') {
       setGameStatus('playing');
-      // Adjust start time based on elapsed time
       const currentTime = timerMode === 'countup' ? pausedTime : timeElapsed;
       startTimeRef.current = Date.now() - (currentTime * 1000);
       startTimer();
@@ -461,7 +468,7 @@ const App: React.FC = () => {
       if (moveTimeoutRef.current) clearTimeout(moveTimeoutRef.current);
       if (hintTimeoutRef.current) clearTimeout(hintTimeoutRef.current);
     };
-  }, []);
+  }, [initializeGame, stopTimer]);
 
   // Dark mode styles
   const darkModeClasses = {
@@ -770,13 +777,6 @@ const App: React.FC = () => {
             </button>
           ))}
         </div>
-
-        {/* Daily Challenge Banner */}
-        {dailyChallenge && !dailyChallenge.completed && (
-          <div className="mb-6 p-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg text-white text-center font-semibold">
-            🌟 Daily Challenge: Complete {dailyChallenge.pairs} pairs today! 🌟
-          </div>
-        )}
 
         {/* Game Board */}
         <div className={`grid ${getGridCols()} gap-2 md:gap-3 max-w-4xl mx-auto`}>

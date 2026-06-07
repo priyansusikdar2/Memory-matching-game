@@ -1,4 +1,4 @@
-import { Card, Difficulty, DifficultyConfig, GameStats, MatchRecord } from '../types/game.types';
+import { Card, Difficulty, DifficultyConfig, GameStats } from '../types/game.types';
 import { cardIcons } from '../data/cardIcons';
 
 // Difficulty configurations
@@ -276,7 +276,7 @@ export const isValidSavedGame = (savedData: { timestamp: number }, maxAge: numbe
  * @returns Unique ID string
  */
 export const generateUniqueId = (): string => {
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 };
 
 /**
@@ -289,7 +289,7 @@ export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   delay: number
 ): ((...args: Parameters<T>) => void) => {
-  let timeoutId: NodeJS.Timeout;
+  let timeoutId: ReturnType<typeof setTimeout>;
   return (...args: Parameters<T>) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => func(...args), delay);

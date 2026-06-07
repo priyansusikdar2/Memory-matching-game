@@ -1,11 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
+import { FirebaseProvider } from './context/FirebaseContext'
 import './index.css'
 
-// Enable React Strict Mode for better development experience
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <FirebaseProvider>
+      <App />
+    </FirebaseProvider>
   </React.StrictMode>,
 )
