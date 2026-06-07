@@ -336,5 +336,5 @@ If you found this project helpful or enjoyable, please consider:
 💡 Suggesting new features
 
 
-                                                Made with ❤️ using React, TypeScript, and Tailwind CSS
+                                            Made with ❤️ using React, TypeScript, and Tailwind CSS
 
