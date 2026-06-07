@@ -1,0 +1,252 @@
+/* Tailwind CSS directives - these are processed by Tailwind CLI */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Reset and base styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    outline: none;
+    ring: 2px solid #8b5cf6;
+    ring-offset: 2px;
+  }
+
+  /* Selection styles */
+  ::selection {
+    background-color: #8b5cf6;
+    color: white;
+  }
+
+  /* Disabled cursor */
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+@layer components {
+  /* Custom card styles */
+  .card {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-flipped {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-matched {
+    cursor: default;
+  }
+
+  /* Custom button styles */
+  .btn-primary {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-image: linear-gradient(to right, #8b5cf6, #ec4899);
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-primary:focus {
+    outline: none;
+    ring: 2px solid #8b5cf6;
+    ring-offset: 2px;
+  }
+
+  .btn-secondary {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: #374151;
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+  }
+
+  .btn-secondary:hover {
+    background-color: #4b5563;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+  }
+
+  .dark .glass {
+    background-color: rgba(17, 24, 39, 0.3);
+  }
+}
+
+@layer utilities {
+  /* Custom animations */
+  @keyframes flip {
+    0% {
+      transform: rotateY(0deg);
+    }
+    100% {
+      transform: rotateY(180deg);
+    }
+  }
+
+  @keyframes flip-back {
+    0% {
+      transform: rotateY(180deg);
+    }
+    100% {
+      transform: rotateY(0deg);
+    }
+  }
+
+  @keyframes confetti {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes match {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  /* Custom utility classes */
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background-image: linear-gradient(to right, #7c3aed, #db2777);
+    background-clip: text;
+    color: transparent;
+  }
+
+  .dark .gradient-text {
+    background-image: linear-gradient(to right, #a78bfa, #f472b6);
+  }
+
+  /* Shadow glow */
+  .shadow-glow {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+  }
+
+  .shadow-glow-lg {
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
+  }
+
+  /* Responsive grid columns */
+  .grid-cols-responsive {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 640px) {
+    .grid-cols-responsive {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .grid-cols-responsive {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* Animations */
+  .animate-match {
+    animation: match 0.5s ease-out;
+  }
+
+  .animate-confetti {
+    animation: confetti 3s linear forwards;
+  }
+}
+
+/* Dark mode transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Responsive container */
+@media (min-width: 640px) {
+  .container {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
